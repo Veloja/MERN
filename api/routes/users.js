@@ -6,11 +6,25 @@ const User = require('../models/user');
 
 router.get('/', (req, res, next) => {
 	User.find()
+	.select('_id name password email')
 	.exec()
 	.then(docs => {
-		console.log('All docs', docs);
-			console.log('docs', docs)
-			res.status(200).json(docs);
+		const response = {
+			count: docs.length,
+			users: docs.map(doc => {
+				return {
+					_id: doc._id,
+					name: doc.name,
+					password: doc.password,
+					email: doc.email,
+					url: {
+						type: 'GET',
+						url: 'http://localhost:3000/users/' + doc._id
+					}
+				}
+			})
+		}
+		res.status(200).json(response);
 	})
 	.catch(err => {
 		console.log('Error', err);
@@ -31,8 +45,15 @@ router.post('/', (req, res, next) => {
 	.save()
 	.then(user => {
 		res.status(201).json({
-			message: 'Handling POST req to / products',
-			createdUser: user
+			message: 'Created product sucessfully',
+			createdUser: {
+				_id: result._id,
+				name: result.name,
+				requset: {
+					type: 'GET',
+					url: 'http://localhost:3000/users/' + result._id
+				}
+			}
 		})
 	})
 	.catch(err => {
@@ -47,6 +68,7 @@ router.post('/', (req, res, next) => {
 router.get('/:userId', (req, res, next) => {
 	const id = req.params.userId;
 	User.findById(id)
+	.select('_id name password')
 	.exec()
 	.then(doc => {
 		console.log('document from data base', doc)
@@ -71,8 +93,13 @@ router.patch('/:userId', (req, res, next) => {
 	User.update({_id: id}, { $set: updateOps })
 	.exec()
 	.then(result => {
-		console.log(result)
-		res.status(200).json(result);
+		res.status(200).json({
+			message: 'Product updated',
+			request: {
+				type: 'GET',
+				url: 'http://localhost:3000/products/' + id
+			}
+		});
 	})
 	.catch(err => {
 		console.log(err);
@@ -84,11 +111,17 @@ router.patch('/:userId', (req, res, next) => {
 
 router.delete('/:userId', (req, res, next) => {
 	const id = req.params.userId;
-	User.remove({_id: id})
+	User.deleteOne({_id: id})
 	.exec()
 	.then(result => {
-		console.log(res);
-		res.status(200).json(result);
+		res.status(200).json({
+			message: 'Product deleted',
+			request: {
+				type: 'POST',
+				url: 'localhost://3000/users',
+				body: { name: 'String', password: 'String', email: 'String' }
+			}
+		});
 	})
 	.catch(err => {
 		console.log('Error', err)
