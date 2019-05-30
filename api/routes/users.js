@@ -19,7 +19,7 @@ router.get('/', (req, res, next) => {
 					email: doc.email,
 					url: {
 						type: 'GET',
-						url: 'http://localhost:3000/users/' + doc._id
+						url: 'http://localhost:3001/users/' + doc._id
 					}
 				}
 			})
@@ -60,7 +60,7 @@ router.post('/', (req, res, next) => {
 						name: res.name,
 						requset: {
 							type: 'GET',
-							url: 'http://localhost:3000/users/' + res._id
+							url: 'http://localhost:3001/users/' + res._id
 						}
 					}
 				})
@@ -108,7 +108,7 @@ router.patch('/:userId', (req, res, next) => {
 			message: 'Product updated',
 			request: {
 				type: 'GET',
-				url: 'http://localhost:3000/products/' + id
+				url: 'http://localhost:3001/products/' + id
 			}
 		});
 	})
@@ -129,7 +129,7 @@ router.delete('/:userId', (req, res, next) => {
 			message: 'Product deleted',
 			request: {
 				type: 'POST',
-				url: 'localhost://3000/users',
+				url: 'localhost://3001/users',
 				body: { name: 'String', password: 'String', email: 'String' }
 			}
 		});
