@@ -3,12 +3,14 @@ import './App.css';
 
 class App extends Component {
 
-  state = { users: [] }
+  state = {
+    users: []
+  }
 
   componentDidMount() {
     fetch('http://localhost:3001/users')
     .then(res => res.json())
-    .then(users => this.setState({ users }))
+    .then(users => this.setState({ users: users.users }))
   }
 
   render() {
@@ -16,7 +18,7 @@ class App extends Component {
       <div className="App">
         <ul>
           {
-            this.state.users.map(user => <li>asdas</li>)
+            this.state.users.map(user => <li key={user._id}>{user.name}</li>)
           }
         </ul>
       </div>
