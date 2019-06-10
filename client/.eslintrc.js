@@ -9,4 +9,8 @@ module.exports =  {
       ecmaVersion:  2018,  // Allows for the parsing of modern ECMAScript features
       sourceType:  'module',  // Allows for the use of imports
     },
+    "rules": {
+      "@typescript-eslint/rule-name": "error",
+      "@typescript-eslint/explicit-member-accessibility": false
+    }
 };

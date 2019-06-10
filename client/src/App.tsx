@@ -1,42 +1,54 @@
 import * as React from 'react';
 import './App.css';
 
-interface User {
-    _id: number;
-    name: string;
-    password: string;
-    email: string;
-}
 interface AppState {
-    users: User[];
+    name: string;
+    email: string;
+    password: string;
 }
 
 class App extends React.Component<{}, AppState> {
-    public state: AppState = {
-        users: [],
+    state = {
+        name: '',
+        email: '',
+        password: '',
     };
 
-    public componentDidMount(): void {
-        fetch('http://localhost:3001/users')
-            .then(res => res.json())
-            .then(users => this.setState({ users: users.users }));
-    }
+    handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+        const { name, value } = e.target;
+        this.setState({
+            ...this.state,
+            [name as string]: value,
+        });
+    };
 
-    public render(): React.ReactNode {
-        console.log(this.state.users);
+    handleRegister = (): void => {
+        console.log('register fired off');
+        console.log(this.state);
+        fetch('http://localhost:3001/users', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                ...this.state,
+            }),
+        })
+            .then((res): Promise<any> => res.json())
+            .then((res): void => console.log(res));
+    };
+
+    render(): JSX.Element {
         return (
             <div className="App">
-                <header className="App-header">
-                    <p>
-                        {this.state.users.map(
-                            (user): JSX.Element => (
-                                <li key={user._id}>
-                                    index: {user._id} {user.name}
-                                </li>
-                            ),
-                        )}
-                    </p>
-                </header>
+                <p>Working...aaa</p>
+                <div>
+                    Register as a user:
+                    <input name="name" type="text" placeholder="name" onChange={this.handleChange} />
+                    <input name="email" type="text" placeholder="email" onChange={this.handleChange} required />
+                    <input name="password" type="password" placeholder="password" onChange={this.handleChange} />
+                    <button onClick={this.handleRegister}>Register</button>
+                </div>
             </div>
         );
     }
