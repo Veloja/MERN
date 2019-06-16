@@ -1,15 +1,12 @@
 import * as React from 'react';
-import './App.css';
 
 interface AppState {
-    name: string;
     email: string;
     password: string;
 }
 
 class App extends React.Component<{}, AppState> {
     state = {
-        name: '',
         email: '',
         password: '',
     };
@@ -23,9 +20,9 @@ class App extends React.Component<{}, AppState> {
     };
 
     handleRegister = (): void => {
-        console.log('REGISTER fired off');
+        console.log('LOGIN fired off');
         console.log(this.state);
-        fetch('http://localhost:3001/users', {
+        fetch('http://localhost:3001/users/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -38,19 +35,16 @@ class App extends React.Component<{}, AppState> {
             .then((res): void => console.log(res));
     };
 
-    render() {
+    render(): JSX.Element {
         return (
             <div className="App">
-                <p>APP REGISTER</p>
+                <p>LOGIN</p>
                 <div>
-                    Register as a user:
-                    <input name="name" type="text" placeholder="name" onChange={this.handleChange} />
+                    Login as a user:
                     <input name="email" type="text" placeholder="email" onChange={this.handleChange} required />
                     <input name="password" type="password" placeholder="password" onChange={this.handleChange} />
-                    <button onClick={this.handleRegister}>Register</button>
+                    <button onClick={this.handleRegister}>LOGIN</button>
                 </div>
-                <br />
-                <br />
             </div>
         );
     }
