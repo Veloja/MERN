@@ -1,5 +1,4 @@
 import * as React from 'react';
-import './App.css';
 
 interface AppState {
     name: string;
@@ -36,6 +35,9 @@ class App extends React.Component<{}, AppState> {
         })
             .then((res): Promise<any> => res.json())
             .then((res): void => console.log(res));
+        setTimeout(() => {
+            window.location.href = '/login';
+        }, 1500);
     };
 
     render() {
