@@ -21,8 +21,8 @@ class App extends React.Component<{}, AppState> {
 
     handleRegister = (): void => {
         console.log('LOGIN fired off');
-        console.log(this.state);
-        fetch('http://localhost:3001/users/login', {
+        console.log('Login state: ', this.state);
+        fetch('http://localhost:3001/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -32,7 +32,15 @@ class App extends React.Component<{}, AppState> {
             }),
         })
             .then((res): Promise<any> => res.json())
-            .then((res): void => console.log(res));
+            .then(
+                (res): void => {
+                    const token = res.token;
+                    localStorage.setItem('jwtToken', token);
+                },
+            );
+        setTimeout(() => {
+            window.location.href = '/home';
+        }, 1500);
     };
 
     render(): JSX.Element {
